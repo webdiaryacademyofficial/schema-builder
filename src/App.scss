@@ -1,0 +1,21 @@
+// Global classes
+.flex {
+  display: flex;
+}
+
+.container {
+  max-width: 90%;
+  margin: auto;
+}
+
+.layout-wrapper {
+  .sidebar {
+    width: 20%;
+    background-color: #f4f4f4;
+  }
+
+  .main {
+    width: 80%;
+    background-color: #fff;
+  }
+}
