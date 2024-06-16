@@ -1,17 +1,8 @@
 import { TiTick } from "react-icons/ti";
 import { CiViewTable } from "react-icons/ci";
-import { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
-import { IoMdResize } from "react-icons/io";
 import { PiResizeFill } from "react-icons/pi";
-import {
-  Handle,
-  Position,
-  useReactFlow,
-  NodeResizer,
-  NodeResizeControl,
-} from "reactflow";
-import { PiMouseScroll } from "react-icons/pi";
+import { Handle, Position, useReactFlow, NodeResizeControl } from "reactflow";
 import "react-resizable/css/styles.css";
 
 const TableNode = ({ id, isConnectable, data }) => {
@@ -43,33 +34,17 @@ const TableNode = ({ id, isConnectable, data }) => {
     const edgeSource = columnData.column_id;
     columnData.column_id = `${data.label}_${data.columns.length + 1}`;
 
-    const updatedNodes = nodes.map((node) => {
-      if (node.id === id) {
-        console.log("if condition", node.id, id);
-        const updatedColumns = [...node.data.columns, columnData];
+    const currentNode = reactFlowInstance.getNode(id);
+    const updatedNode = {
+      id: currentNode.id,
+      position: currentNode.position,
+      data: currentNode.data,
+      type: currentNode.type,
+    };
+    updatedNode.data.columns.push(columnData);
+    reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
 
-        return {
-          ...node,
-          data: {
-            ...node.data,
-            columns: updatedColumns,
-          },
-        };
-      } else if (node.id === parentNodeId) {
-        console.log("else condition", node.id, parentNodeId);
-        const updatedColumns = [...node.data.columns, columnData];
-
-        return {
-          ...node,
-          data: {
-            ...node.data,
-            columns: updatedColumns,
-          },
-        };
-      }
-
-      return node;
-    });
+    reactFlowInstance.addNodes(updatedNode);
 
     const newEdge = {
       id: `${edgeSource}-${columnData.column_id}`,
@@ -79,7 +54,6 @@ const TableNode = ({ id, isConnectable, data }) => {
       targetHandle: `${columnData.column_id}_left`,
     };
 
-    reactFlowInstance.setNodes(updatedNodes);
     reactFlowInstance.addEdges(newEdge);
 
     console.log(newEdge, "newEdge");
@@ -101,10 +75,19 @@ const TableNode = ({ id, isConnectable, data }) => {
     reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
   };
 
+  const onResize = (e, params) => {
+    console.log(e, params);
+  };
+
   return (
     <>
-      <NodeResizeControl isVisible>
-      <PiResizeFill />
+      <NodeResizeControl
+        isVisible
+        minWidth={250}
+        minHeight={250}
+        onResize={onResize}
+      >
+        <PiResizeFill />
       </NodeResizeControl>
       <div className="table-wrapper">
         <div className="table-header | flex between">
