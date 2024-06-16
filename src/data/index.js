@@ -23,6 +23,36 @@ export const data = [
               name: "experience",
               column_data_type: "integer",
             },
+            {
+              column_id: "column_1_1",
+              name: "age",
+              column_data_type: "integer",
+            },
+            {
+              column_id: "column_1_2",
+              name: "emp_id",
+              column_data_type: "integer",
+            },
+            {
+              column_id: "column_1_3",
+              name: "experience",
+              column_data_type: "integer",
+            },
+            {
+              column_id: "column_1_1",
+              name: "age",
+              column_data_type: "integer",
+            },
+            {
+              column_id: "column_1_2",
+              name: "emp_id",
+              column_data_type: "integer",
+            },
+            {
+              column_id: "column_1_3",
+              name: "experience",
+              column_data_type: "integer",
+            },
           ],
         },
         {

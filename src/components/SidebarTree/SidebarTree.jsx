@@ -1,10 +1,12 @@
 import { data } from "../../data";
+import { CiSquarePlus } from "react-icons/ci";
 
 const SidebarTree = () => {
   const tableData = data;
 
   const handleDragStart = (event, table) => {
     event.dataTransfer.setData("table", JSON.stringify(table));
+    event.dataTransfer.setData("dragType", JSON.stringify("NODE"));
   };
 
   return (
@@ -12,7 +14,10 @@ const SidebarTree = () => {
       {tableData &&
         tableData?.map((tabelGroup) => (
           <div key={tabelGroup?.table_group?.name}>
-            <li>{tabelGroup?.table_group?.name}</li>
+            <li className="flex gap-5 items-center">
+              <CiSquarePlus />
+              {tabelGroup?.table_group?.name}
+            </li>
 
             {tabelGroup?.table_group?.tables ? (
               <ul>

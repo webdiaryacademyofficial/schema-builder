@@ -1,12 +1,9 @@
 import { useState, useCallback } from "react";
-import ReactFlow, {
-  useNodesState,
-  useEdgesState,
-  addEdge,
-} from "reactflow";
+import ReactFlow, { useNodesState, useEdgesState, addEdge } from "reactflow";
 import "reactflow/dist/style.css";
 import TableNode from "../TableNode/TableNode";
 
+// Custom node type
 const nodeTypes = { tableNode: TableNode };
 
 const Main = () => {
@@ -17,7 +14,9 @@ const Main = () => {
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => {
+      setEdges((eds) => addEdge(params, eds));
+    },
     [setEdges]
   );
 
@@ -25,12 +24,24 @@ const Main = () => {
     setReactFlowInstance(instance);
   };
 
-  const isValidConnection = (connection) => connection.target === 'target';
-
   // Drop functionalities
   const handleDrop = (event) => {
     event.preventDefault();
+
+    const dragType = JSON.parse(event.dataTransfer.getData("dragType"));
+    if (dragType !== "NODE") {
+      return;
+    }
     const tableData = JSON.parse(event.dataTransfer.getData("table"));
+
+    // Check table node presence in grid
+    const isNodeAlreadyAvailable = nodes?.some(
+      (node) => node.id === tableData.id
+    );
+    if (isNodeAlreadyAvailable) {
+      alert("Node already added");
+      return;
+    }
     setDroppedTable(tableData);
 
     // Calculate table node position
