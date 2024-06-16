@@ -1,25 +1,19 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
   addEdge,
-  applyEdgeChanges,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import TableNode from "../TableNode/TableNode";
-
-const initialNodes = [];
-
-const initialEdges = [];
-// { id: "e1-2", source: "table_1", target: "table_2" }
 
 const nodeTypes = { tableNode: TableNode };
 
 const Main = () => {
   // React flow fuctionalities
   const [droppedTable, setDroppedTable] = useState(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onConnect = useCallback(
@@ -31,20 +25,11 @@ const Main = () => {
     setReactFlowInstance(instance);
   };
 
-  // const onEdgesChange = useCallback(
-  //   (changes) => {
-  //     setEdges((oldEdges) => applyEdgeChanges(changes, oldEdges));
-  //   },
-  //   [setEdges]
-  // );
-
-
   // Drop functionalities
   const handleDrop = (event) => {
     event.preventDefault();
     const tableData = JSON.parse(event.dataTransfer.getData("table"));
     setDroppedTable(tableData);
-    console.log(tableData, "tableData recd on handle drop");
 
     // Calculate table node position
     const position = reactFlowInstance.screenToFlowPosition({
@@ -79,6 +64,7 @@ const Main = () => {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         onInit={onInit}
+        snapToGrid
       />
     </main>
   );

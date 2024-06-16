@@ -1,10 +1,18 @@
-import { Handle, Position } from "reactflow";
+import { Handle, Position, useReactFlow } from "reactflow";
 
-const handleStyle = { left: 10 };
-
-const TableNode = ({ isConnectable }) => {
+const TableNode = ({ id, isConnectable, data }) => {
+  
+  const reactFlow = useReactFlow();
+  const nodes = reactFlow.getNodes();
+  const index = nodes.findIndex((item) => item.data.label === data?.label);
+  
   return (
     <div className="table-wrapper">
+      <Handle
+        type="source"
+        position={Position.Right}
+        isConnectable={isConnectable}
+      />
       <table className="table" border="1">
         <tbody>
           <tr>
@@ -32,13 +40,13 @@ const TableNode = ({ isConnectable }) => {
         </tbody>
       </table>
 
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="a"
-        style={handleStyle}
-        isConnectable={isConnectable}
-      />
+      {index != 0 && (
+        <Handle
+          type="target"
+          position={Position.Left}
+          isConnectable={isConnectable}
+        />
+      )}
     </div>
   );
 };

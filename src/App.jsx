@@ -1,4 +1,4 @@
-import "./app.scss";
+import "./App.scss";
 import Container from "./components/Container/Container";
 import Layout from "./components/Layout/Layout";
 import Main from "./components/Main/Main";
