@@ -8,8 +8,13 @@ import "react-resizable/css/styles.css";
 const TableNode = ({ id, isConnectable, data }) => {
   const reactFlowInstance = useReactFlow();
 
-  const nodes = reactFlowInstance.getNodes();
-  const edges = reactFlowInstance.getEdges();
+  // Table columns drag operations
+  const handleDragStart = (event, column, table) => {
+    event.dataTransfer.setData("column", JSON.stringify(column));
+    event.dataTransfer.setData("table", JSON.stringify(table));
+    event.dataTransfer.setData("dragType", JSON.stringify("COLUMN"));
+    event.dataTransfer.setData("nodeId", id);
+  };
 
   // Table drag operations
   const onDrop = (event) => {
@@ -24,8 +29,6 @@ const TableNode = ({ id, isConnectable, data }) => {
       return;
     }
 
-    event.dataTransfer.effectAllowed = "move";
-
     if (tableData.label === data.label) {
       alert("You cannot move column to same table");
       return;
@@ -34,18 +37,23 @@ const TableNode = ({ id, isConnectable, data }) => {
     const edgeSource = columnData.column_id;
     columnData.column_id = `${data.label}_${data.columns.length + 1}`;
 
+    // Get current node
     const currentNode = reactFlowInstance.getNode(id);
+
+    // Make a copy of current nodes to avoid backward drop compatability
     const updatedNode = {
-      id: currentNode.id,
-      position: currentNode.position,
-      data: currentNode.data,
-      type: currentNode.type,
+      id: currentNode?.id,
+      position: currentNode?.position,
+      data: currentNode?.data,
+      type: currentNode?.type,
+      style: currentNode?.style,
     };
-    updatedNode.data.columns.push(columnData);
+    updatedNode.data.columns.unshift(columnData);
     reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
 
     reactFlowInstance.addNodes(updatedNode);
 
+    // Create new edge
     const newEdge = {
       id: `${edgeSource}-${columnData.column_id}`,
       source: parentNodeId,
@@ -55,40 +63,23 @@ const TableNode = ({ id, isConnectable, data }) => {
     };
 
     reactFlowInstance.addEdges(newEdge);
-
-    console.log(newEdge, "newEdge");
   };
 
   const handleDragOver = (event) => {
     event.preventDefault();
   };
 
-  // Table columns drag operations
-  const handleDragStart = (event, column, table) => {
-    event.dataTransfer.setData("column", JSON.stringify(column));
-    event.dataTransfer.setData("table", JSON.stringify(table));
-    event.dataTransfer.setData("dragType", JSON.stringify("COLUMN"));
-    event.dataTransfer.setData("nodeId", id);
-  };
-
+  // Delete table node
   const handleNodeDelete = () => {
     reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
   };
 
-  const onResize = (e, params) => {
-    console.log(e, params);
-  };
-
   return (
     <>
-      <NodeResizeControl
-        isVisible
-        minWidth={250}
-        minHeight={250}
-        onResize={onResize}
-      >
+      <NodeResizeControl isVisible minWidth={250} ß minHeight={250}>
         <PiResizeFill />
       </NodeResizeControl>
+
       <div className="table-wrapper">
         <div className="table-header | flex between">
           <div className="flex items-center gap-5">

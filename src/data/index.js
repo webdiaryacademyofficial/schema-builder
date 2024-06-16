@@ -24,33 +24,33 @@ export const data = [
               column_data_type: "integer",
             },
             {
-              column_id: "column_1_1",
-              name: "age",
-              column_data_type: "integer",
-            },
-            {
-              column_id: "column_1_2",
-              name: "emp_id",
-              column_data_type: "integer",
-            },
-            {
-              column_id: "column_1_3",
+              column_id: "column_1_4",
               name: "experience",
               column_data_type: "integer",
             },
             {
-              column_id: "column_1_1",
+              column_id: "column_1_5",
               name: "age",
               column_data_type: "integer",
             },
             {
-              column_id: "column_1_2",
+              column_id: "column_1_6",
               name: "emp_id",
               column_data_type: "integer",
             },
             {
-              column_id: "column_1_3",
+              column_id: "column_1_7",
               name: "experience",
+              column_data_type: "integer",
+            },
+            {
+              column_id: "column_1_8",
+              name: "age",
+              column_data_type: "integer",
+            },
+            {
+              column_id: "column_1_9",
+              name: "emp_id",
               column_data_type: "integer",
             },
           ],

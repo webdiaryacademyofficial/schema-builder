@@ -75,7 +75,7 @@ ul {
   }
 
   .main {
-    height: 500px;
+    height: 80vh;
     width: 80%;
     background-color: #ffffff;
     opacity: 0.8;
@@ -110,6 +110,7 @@ ul {
     background-color: white;
     border: none;
     width: 100%;
+    overflow: hidden;
 
     tr {
       &:last-child {
@@ -154,10 +155,10 @@ ul {
   opacity: 0;
 }
 
-// .selectable {
-//   height: 200px;
-//   overflow-y: hidden;
-// }
+.selectable {
+  height: 200px;
+  overflow-y: hidden;
+}
 
 .react-flow__resize-control {
   z-index: 990 !important;
@@ -168,6 +169,21 @@ ul {
   right: 0 !important;
   bottom: 0 !important;
   svg {
-    transform: scale(1.25);
+    transform: scale(1.25) rotate(270deg);
+  }
+}
+
+.react-flow__edge-path, .react-flow__connection-path {
+  stroke: #fec600 !important;
+  stroke-width: 2px !important;
+}
+
+.react-flow__edge {
+  position: relative !important;
+  &:after {
+    content: "8" !important;
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 0 !important;
   }
 }
