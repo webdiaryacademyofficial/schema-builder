@@ -1,11 +1,11 @@
 import { Handle, Position, useReactFlow } from "reactflow";
 
 const TableNode = ({ id, isConnectable, data }) => {
-  
+
   const reactFlow = useReactFlow();
   const nodes = reactFlow.getNodes();
   const index = nodes.findIndex((item) => item.data.label === data?.label);
-  
+
   return (
     <div className="table-wrapper">
       <Handle
@@ -17,26 +17,15 @@ const TableNode = ({ id, isConnectable, data }) => {
         <tbody>
           <tr>
             <td colSpan="2" align="center" border="0">
-              Header
+              {data?.label}
             </td>
           </tr>
-          <tr>
-            <td>Row 1, Column 1</td>
-            <td>Row 1, Column 2</td>
-          </tr>
-          <tr>
-            <td>Row 2, Column 1</td>
-            <td>Row 2, Column 2</td>
-          </tr>
-          <tr>
-            <td>Row 3, Column 1</td>
-            <td>Row 3, Column 2</td>
-          </tr>
-          <tr>
-            <td colSpan="2" align="center">
-              Footer
-            </td>
-          </tr>
+          {data?.columns?.map((data) => (
+            <tr key={data?.column_id}>
+              <td>{data?.name}</td>
+              <td>{data?.column_data_type}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
 

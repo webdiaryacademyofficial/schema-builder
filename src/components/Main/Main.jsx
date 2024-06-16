@@ -25,6 +25,8 @@ const Main = () => {
     setReactFlowInstance(instance);
   };
 
+  const isValidConnection = (connection) => connection.target === 'target';
+
   // Drop functionalities
   const handleDrop = (event) => {
     event.preventDefault();
