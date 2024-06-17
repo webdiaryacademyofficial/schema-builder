@@ -24,7 +24,7 @@ const Main = () => {
     setReactFlowInstance(instance);
   };
 
-  // Drop functionalities
+  // Sidbar to grid : Drop functionalities
   const handleDrop = (event) => {
     event.preventDefault();
 
@@ -62,7 +62,7 @@ const Main = () => {
     ]);
   };
 
-  // Drag over
+  // Drag over prevent
   const handleDragOver = (event) => {
     event.preventDefault();
   };

@@ -37,6 +37,10 @@ ul {
   cursor: pointer;
 }
 
+.border-bottom {
+  border-bottom: 1px solid #dddddd;
+}
+
 .container {
   max-width: 90%;
   margin: 100px auto;
@@ -47,7 +51,7 @@ ul {
   border-radius: 12px;
   box-shadow: 1px 1px 10px #e8e8e8;
   .sidebar {
-    width: 20%;
+    width: 280px;
     padding: 20px;
     background-color: #ffffff;
     border-right: 1px solid #ebebeb;
@@ -112,19 +116,16 @@ ul {
     width: 100%;
     overflow: hidden;
 
-    tr {
-      &:last-child {
-        td {
-          border: none;
-        }
-      }
-    }
-
-    td {
-      border: 0;
-      border-bottom: 1px solid #dddddd;
+    .td {
       padding: 8px;
       text-align: left;
+
+      &:first-child{
+        width: 20px;
+      }
+      &:last-child{
+        width: 80px;
+      }
     }
   }
 
