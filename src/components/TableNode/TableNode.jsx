@@ -77,6 +77,7 @@ const TableNode = ({ id, isConnectable, data }) => {
   // Delete table node
   const handleNodeDelete = () => {
     reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
+    reactFlowInstance.setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
   };
 
   // Dragover prevent
