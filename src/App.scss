@@ -42,8 +42,8 @@ ul {
 }
 
 .container {
-  max-width: 75%;
-  margin: 90px auto;
+  max-width: 100%;
+  margin: 20px;
 }
 
 .layout-wrapper {
@@ -99,8 +99,8 @@ ul {
   min-width: 250px;
   width: 100%;
   position: relative;
-  overflow: hidden;
   z-index: 10;
+  padding-bottom: 36px;
 
   .table-header {
     padding: 10px;
@@ -116,7 +116,6 @@ ul {
     background-color: white;
     border: none;
     width: 100%;
-    overflow: hidden;
 
     .td {
       padding: 8px;
@@ -135,7 +134,7 @@ ul {
     background-color: #e3e3e3;
     padding: 12px;
     margin-top: 5px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     z-index: 9;

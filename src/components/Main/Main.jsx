@@ -95,6 +95,16 @@ const Main = () => {
     event.preventDefault();
   };
 
+  function ViewportChangeLogger() {
+    useOnViewportChange({
+      onStart: (viewport: Viewport) => console.log('start', viewport),
+      onChange: (viewport: Viewport) => console.log('change', viewport),
+      onEnd: (viewport: Viewport) => console.log('end', viewport),
+    });
+   
+    return null;
+  }
+
   return (
     <main className="main" onDrop={handleDrop} onDragOver={handleDragOver}>
       <ReactFlow
@@ -105,6 +115,7 @@ const Main = () => {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         onInit={onInit}
+        zoomOnScroll = {false}
         snapToGrid
       />
     </main>

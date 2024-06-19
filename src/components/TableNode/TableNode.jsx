@@ -87,11 +87,11 @@ const TableNode = ({ id, isConnectable, data }) => {
 
   return (
     <>
-      <NodeResizeControl isVisible minWidth={250} minHeight={250}>
+      <NodeResizeControl isVisible >
         <PiResizeFill />
       </NodeResizeControl>
 
-      <div className="table-wrapper">
+      <div className="table-wrapper nowheel" style={{overflowY: "scroll"}}>
         <div className="table-header | flex between">
           <div className="flex items-center gap-5">
             <CiViewTable />
