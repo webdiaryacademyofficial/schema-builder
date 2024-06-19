@@ -6,6 +6,12 @@ import TableNode from "../TableNode/TableNode";
 // Custom node type
 const nodeTypes = { tableNode: TableNode };
 
+// Grid configuration
+const NODE_WIDTH = 250;
+const NODE_HEIGHT = 200;
+const GRID_GAP = 20;
+const GRID_COLUMNS = 3;
+
 const Main = () => {
   // React flow fuctionalities
   const [droppedTable, setDroppedTable] = useState(null);
@@ -22,6 +28,31 @@ const Main = () => {
 
   const onInit = (instance) => {
     setReactFlowInstance(instance);
+  };
+
+  // Calculate next avilable position in the grid
+  const getNextPosition = () => {
+    const gridPositions = new Set(
+      nodes.map((node) => `${node.position.x},${node.position.y}`)
+    );
+    let row = 0;
+    let column = 0;
+
+    while (true) {
+      const x = column * (NODE_WIDTH + GRID_GAP);
+      const y = row * (NODE_HEIGHT + GRID_GAP);
+      const posKey = `${x},${y}`;
+
+      if (!gridPositions.has(posKey)) {
+        return { x, y };
+      }
+
+      column++;
+      if (column >= GRID_COLUMNS) {
+        column = 0;
+        row++;
+      }
+    }
   };
 
   // Sidbar to grid : Drop functionalities
@@ -44,18 +75,15 @@ const Main = () => {
     }
     setDroppedTable(tableData);
 
-    // Calculate table node position
-    const position = reactFlowInstance.screenToFlowPosition({
-      x: event.clientX,
-      y: event.clientY,
-    });
+    // Get the next available position in the grid
+    const position = getNextPosition();
 
     // Set new table nodes
     setNodes([
       ...nodes,
       {
         id: tableData?.id,
-        position: { x: position.x, y: position.y },
+        position: position,
         data: { label: tableData?.name, columns: tableData?.columns },
         type: "tableNode",
       },

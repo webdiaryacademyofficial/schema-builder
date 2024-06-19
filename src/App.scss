@@ -42,8 +42,8 @@ ul {
 }
 
 .container {
-  max-width: 90%;
-  margin: 100px auto;
+  max-width: 75%;
+  margin: 90px auto;
 }
 
 .layout-wrapper {
@@ -85,6 +85,7 @@ ul {
     opacity: 0.8;
     background-image: radial-gradient(#898989 0.5px, #ffffff 0.5px);
     background-size: 10px 10px;
+    padding: 30px;
   }
 }
 
@@ -99,6 +100,7 @@ ul {
   width: 100%;
   position: relative;
   overflow: hidden;
+  z-index: 10;
 
   .table-header {
     padding: 10px;
@@ -136,7 +138,7 @@ ul {
     position: absolute;
     bottom: 0;
     width: 100%;
-    z-index: 99;
+    z-index: 9;
     
     span {
       font-size: 12px;

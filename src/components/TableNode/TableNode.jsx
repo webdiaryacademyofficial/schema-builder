@@ -58,7 +58,7 @@ const TableNode = ({ id, isConnectable, data }) => {
       style: currentNode?.style,
     };
 
-    updatedNode.data.columns.unshift(columnData);
+    updatedNode.data.columns.push(columnData);
     reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
     reactFlowInstance.addNodes(updatedNode);
 
@@ -144,7 +144,7 @@ const TableNode = ({ id, isConnectable, data }) => {
         </div>
 
         <div className="table-footer">
-          <span> Resize to see more columns</span>
+          <span> Scroll to see more columns</span>
         </div>
       </div>
     </>
