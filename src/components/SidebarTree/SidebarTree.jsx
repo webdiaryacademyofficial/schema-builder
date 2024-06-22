@@ -12,22 +12,24 @@ const SidebarTree = () => {
   return (
     <ul>
       {tableData &&
-        tableData?.map((tabelGroup) => (
-          <div key={tabelGroup?.table_group?.name}>
+        tableData?.map(({ table_group: { id, name, tables } }) => (
+          <div key={id}>
             <li className="flex gap-5 items-center">
               <CiSquarePlus />
-              {tabelGroup?.table_group?.name}
+              {name}
             </li>
 
-            {tabelGroup?.table_group?.tables ? (
+            {tables ? (
               <ul>
-                {tabelGroup?.table_group?.tables.map((table) => (
+                {tables.map(({ id, name, columns }) => (
                   <li
-                    key={table?.id}
+                    key={id}
                     draggable
-                    onDragStart={(event) => handleDragStart(event, table)}
+                    onDragStart={(event) =>
+                      handleDragStart(event, { id, name, columns })
+                    }
                   >
-                    {table?.name}
+                    {name}
                   </li>
                 ))}
               </ul>

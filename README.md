@@ -30,10 +30,10 @@ npm install
 
 3. Start development server
 ```bash
-npm start
+npm run dev
 ```
 
 4. Build application
 ```bash
-npm build
+npm run build
 ```

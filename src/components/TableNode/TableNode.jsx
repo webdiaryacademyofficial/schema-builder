@@ -1,9 +1,12 @@
-import { TiTick } from "react-icons/ti";
-import { CiViewTable } from "react-icons/ci";
-import { IoClose } from "react-icons/io5";
 import { PiResizeFill } from "react-icons/pi";
-import { Handle, Position, useReactFlow, NodeResizeControl } from "reactflow";
+import { useReactFlow, NodeResizeControl } from "reactflow";
+import TableBody from "./TableBody";
+import TableFooter from "./TableFooter";
+import TableHeader from "./TableHeader";
+import TableBodyWrapper from "./TableBodyWrapper";
+import TableWrapper from "./TableWrapper";
 
+// eslint-disable-next-line react/prop-types
 const TableNode = ({ id, isConnectable, data }) => {
   const reactFlowInstance = useReactFlow();
 
@@ -34,12 +37,14 @@ const TableNode = ({ id, isConnectable, data }) => {
       return;
     }
 
-    const edgeSource = columnData.column_id;
-    columnData.column_id = `${data.label}_${data.columns.length + 1}`;
-
     // Get current column
     const currentNode = reactFlowInstance.getNode(id);
+    const getTableId = `${currentNode?.id.split('_')}`
+    const tableNumber = getTableId[getTableId.length - 1]
 
+    const edgeSource = columnData.column_id;
+    columnData.column_id = `${currentNode?.id}_column_${tableNumber}_${data?.columns?.length + 1}`
+    
     // Check column already exists
     const columnExists = currentNode.data.columns.some(
       (item) => item.name === columnData.name
@@ -49,7 +54,7 @@ const TableNode = ({ id, isConnectable, data }) => {
       return;
     }
 
-    // Make a copy of current nodes: for backward drop compatability (Table 2 to Table 1)
+    // Make a copy of current table: for backward drop compatability (Table 2 to Table 1)
     const updatedNode = {
       id: currentNode?.id,
       position: currentNode?.position,
@@ -58,9 +63,15 @@ const TableNode = ({ id, isConnectable, data }) => {
       style: currentNode?.style,
     };
 
-    updatedNode.data.columns.push(columnData);
+    // Update target table with new column
+    updatedNode.data.columns.unshift(columnData);
+
+    // Remove target table
     reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
+
+    // Add target table as updated table
     reactFlowInstance.addNodes(updatedNode);
+
 
     // Create new edge
     const newEdge = {
@@ -77,7 +88,9 @@ const TableNode = ({ id, isConnectable, data }) => {
   // Delete table node
   const handleNodeDelete = () => {
     reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== id));
-    reactFlowInstance.setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
+    reactFlowInstance.setEdges((eds) =>
+      eds.filter((edge) => edge.source !== id && edge.target !== id)
+    );
   };
 
   // Dragover prevent
@@ -87,66 +100,23 @@ const TableNode = ({ id, isConnectable, data }) => {
 
   return (
     <>
-      <NodeResizeControl isVisible >
+      <NodeResizeControl isVisible minWidth={250} minHeight={200}>
         <PiResizeFill />
       </NodeResizeControl>
 
-      <div className="table-wrapper nowheel" style={{overflowY: "scroll"}}>
-        <div className="table-header | flex between">
-          <div className="flex items-center gap-5">
-            <CiViewTable />
-            <h3> {data?.label}</h3>
-          </div>
-          <IoClose onClick={handleNodeDelete} className="cursor-pointer" />
-        </div>
+      <TableWrapper>
+        <TableHeader label={data?.label} handleNodeDelete={handleNodeDelete} />
 
-        <div
-          className="table nodrag"
-          onDrop={onDrop}
-          onDragOver={handleDragOver}
-        >
-          <div className="tbody">
-            {data?.columns?.map((column) => {
-              return (
-                <div
-                  key={column?.column_id}
-                  draggable
-                  style={{ position: "relative" }}
-                  onDragStart={(event) => handleDragStart(event, column, data)}
-                  className="tr draggable-row"
-                >
-                  <Handle
-                    id={`${column?.column_id}_left`}
-                    type="target"
-                    position={Position.Left}
-                    isConnectable={isConnectable}
-                  />
-                  <div className="tr flex between gap-5 border-bottom">
-                    <div className="flex gap-5">
-                      <div className="td">
-                        <TiTick />
-                      </div>
-                      <div className="td">{column?.name}</div>
-                    </div>
-                    <div className="td">{column?.column_data_type}</div>
-                  </div>
+        <TableBodyWrapper onDrop={onDrop} handleDragOver={handleDragOver}>
+          <TableBody
+            data={data}
+            handleDragStart={handleDragStart}
+            isConnectable={isConnectable}
+          />
+        </TableBodyWrapper>
 
-                  <Handle
-                    id={`${column?.column_id}_right`}
-                    type="source"
-                    position={Position.Right}
-                    isConnectable={isConnectable}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="table-footer">
-          <span> Scroll to see more columns</span>
-        </div>
-      </div>
+        <TableFooter />
+      </TableWrapper>
     </>
   );
 };

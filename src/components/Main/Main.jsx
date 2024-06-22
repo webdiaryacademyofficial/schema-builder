@@ -35,6 +35,7 @@ const Main = () => {
     const gridPositions = new Set(
       nodes.map((node) => `${node.position.x},${node.position.y}`)
     );
+
     let row = 0;
     let column = 0;
 
@@ -60,20 +61,21 @@ const Main = () => {
     event.preventDefault();
 
     const dragType = JSON.parse(event.dataTransfer.getData("dragType"));
+    const tableData = JSON.parse(event.dataTransfer.getData("table"));
+
     if (dragType !== "NODE") {
       return;
     }
-    const tableData = JSON.parse(event.dataTransfer.getData("table"));
 
     // Check table node presence in grid
     const isNodeAlreadyAvailable = nodes?.some(
       (node) => node.id === tableData.id
     );
+
     if (isNodeAlreadyAvailable) {
-      alert("Node already added");
+      alert("Table already added");
       return;
     }
-    setDroppedTable(tableData);
 
     // Get the next available position in the grid
     const position = getNextPosition();
@@ -94,7 +96,6 @@ const Main = () => {
   const handleDragOver = (event) => {
     event.preventDefault();
   };
-
 
   return (
     <main className="main" onDrop={handleDrop} onDragOver={handleDragOver}>
